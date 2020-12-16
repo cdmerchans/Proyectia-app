@@ -3,14 +3,15 @@
     <div class="header">
         <h1>Proyectia</h1>
         <nav>
-          <button v-on:click="init"> Empresa </button> 
-          <button v-on:click="getProyecto" > Crear proyecto</button> 
-          <button v-on:click="readProyecto" > Consultar </button>
-          <button v-on:click="putProyecto" > Actualizar </button>
-          <button v-if="is_auth" >Cerrar Sesión</button>
+          <button v-on:click="init" v-if="is_auth"> Empresa </button> 
+          <button v-on:click="pushProyecto" v-if="is_auth"> Crear proyecto</button> 
+          <button v-on:click="readProyecto" v-if="is_auth"> Consultar </button>
+          <button v-on:click="putProyecto" v-if="is_auth"> Actualizar </button>
+          <button v-if="is_auth">Cerrar Sesión</button>
         </nav>
     </div>
     <div class="main-component">
+      <router-view></router-view>
     </div>
     <div class="footer"> 
       <h2>G2M2E3</h2>
@@ -28,9 +29,16 @@
       }
     },  
     methods: {
+      readProyecto: function(){
+        if(this.$route.name != "consulta"){
+          let empresa = localStorage.getItem("current_empresa")
+          this.$router.push({ name:"consulta",params:{empresa:empresa}})
+      }
+    },
+
     },
     beforeCreate: function(){ 
-      localStorage.setItem('current_username', 'camilo24') 
+      localStorage.setItem('current_empresa', 'Empresa_1') 
       localStorage.setItem('isAuth', true)
     } 
   }
@@ -54,6 +62,7 @@
   .header h1{ 
     width: 20%;
     text-align: center;
+    opacity:.3
   }
   .header nav { 
     height: 100%; 
@@ -79,10 +88,10 @@
     height: 75vh;
     margin: 0%;
     padding: 0%; 
-    background-image: url('https://www.flaticon.es/premium-icon/icons/svg/1078/1078454.svg');
+    /*background-image: url('https://www.flaticon.es/premium-icon/icons/svg/1078/1078454.svg');*/
     background-repeat: no-repeat;
     background-position: center; 
-    opacity:.1
+
   }
   .footer{
   margin: 0;
